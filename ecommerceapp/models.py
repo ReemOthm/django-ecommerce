@@ -11,7 +11,7 @@ class Items(models.Model):
     description = models.CharField(max_length=150)
     image= models.ImageField(upload_to='images/', null=True)
     price= models.FloatField()
-    availibility = models.BooleanField()
+    availability = models.BooleanField()
     storetype = models.ForeignKey(StoreType, on_delete= models.CASCADE, null=True)
     def __str__(self):
         template='{0.item_name} {0.description} {0.image} {0.price} {0.availability}'
