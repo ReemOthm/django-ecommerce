@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Cairo' rel='stylesheet'>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <title>Ecommerce</title>
+    <style>
+        body {
+            font-family: 'Cairo';font-size: 22px;
+        }
+    </style>
+</head>
+<body>
+    <header class="section-header">
+    
+    </header>
+    
+    
+    <main>
+        {% block content%}
+        {% endblock content%}
+    </main>
+
+    <footer></footer>
+</body>
+</html>
