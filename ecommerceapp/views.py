@@ -12,3 +12,11 @@ def products(request):
     template = loader.get_template('products.html')
     return HttpResponse(template.render({'items':p}))
 
+def details(request,id):
+    template = loader.get_template('details.html')
+    data = ItemsDetails.objects.select_related('item').filter(item_id=id).first()
+    # data.total= (data.item.price * data.qty) - discount 
+
+    print(data)
+    return HttpResponse(template.render({'data':data}))
+

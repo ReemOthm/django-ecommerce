@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', ec.index),
     path('products/', ec.products, name='products'),
+    path('details/<int:id>', ec.details, name='details'),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
