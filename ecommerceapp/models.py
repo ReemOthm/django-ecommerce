@@ -27,3 +27,6 @@ class ItemsDetails(models.Model):
         template='{0.color} {0.qty} {0.tax} {0.barcode}'
         return template.format(self)
 
+class Cart(models.Model):
+    itemsid = models.IntegerField()
+
