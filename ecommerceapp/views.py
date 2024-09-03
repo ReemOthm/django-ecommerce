@@ -3,6 +3,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.template import loader
 from .models import Items, StoreType, ItemsDetails, Cart
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 from django.contrib.auth import login ,authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -13,8 +14,8 @@ def index(request):
     template = loader.get_template('index.html')
     return HttpResponse(template.render({'request':request}))
 
-def products(request):
-    p = Items.objects.filter(storetype=1)
+def products(request, id):
+    p = Items.objects.filter(storetype=id)
     template = loader.get_template('products.html')
     return HttpResponse(template.render({'request':request, 'items':p}))
 
@@ -39,7 +40,7 @@ def add_to_cart(request):
 def checkout(request):
     template = loader.get_template('checkout.html')
     cart_items = Cart.objects.values_list('itemsid', flat=True)
-    items = ItemsDetails.objects.select_related("item").filter(id__in=cart_items)
+    items = ItemsDetails.objects.select_related("item").filter(Q(id__in=cart_items) | Q(item_id__in= cart_items))
     return HttpResponse(template.render({'request': request, 'items': items }))
 
 @csrf_exempt

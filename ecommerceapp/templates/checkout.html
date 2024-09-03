@@ -34,25 +34,29 @@
                                                         <small class="text-secondary fs-6">{{data.color}}</small>
                                                     </div>
                                                 </div>
-                                                <div class="d-flex col-3 align-items-center">
-                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn"
-                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
-                                                        <i class="bi bi-dash-circle-fill"></i>
-                                                    </button>
-                                    
-                                                    <input id="form1" min="0" name="quantity" value="1" type="number"
-                                                        class="form-control form-control-sm" />
-                                    
-                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn rounded-3"
-                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
-                                                        <i class="bi bi-plus-circle-fill"></i>
-                                                    </button>
-                                                </div>
-                                                <div class="d-flex flex-row align-items-center">
-                                                    <div style="width: 80px;">
-                                                        <h5 class="mb-0">{{data.item.price}}</h5>
+                                                <div class="d-flex align-items-center gap-5">
+                                                    <div class="d-flex ">
+                                                        <button data-mdb-button-init data-mdb-ripple-init class="btn"
+                                                            onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                            <i class="bi bi-dash-circle-fill"></i>
+                                                        </button>
+                                        
+                                                        <input id="form1" min="0" name="quantity" value="1" type="number"
+                                                            class="form-control form-control-sm"
+                                                            style="width:60px"
+                                                            />
+                                        
+                                                        <button data-mdb-button-init data-mdb-ripple-init class="btn rounded-3"
+                                                            onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                            <i class="bi bi-plus-circle-fill"></i>
+                                                        </button>
                                                     </div>
-                                                    <a href="#!" class="text-danger"><i class="bi bi-trash3"></i></a>
+                                                    <div class="d-flex align-items-center">
+                                                        <div style="width: 80px;">
+                                                            <h5 class="mb-0">{{data.item.price}}</h5>
+                                                        </div>
+                                                        <a href="#!" class="text-danger"><i class="bi bi-trash3"></i></a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
