@@ -16,6 +16,14 @@ class Items(models.Model):
     def __str__(self):
         template='{0.item_name} {0.description} {0.image} {0.price} {0.availability}'
         return template.format(self)
+    
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = ''
+        return url
 
 class ItemsDetails(models.Model):
     color = models.CharField(max_length=50)

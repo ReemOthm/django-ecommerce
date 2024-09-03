@@ -1,0 +1,134 @@
+{% extends 'base.html'%}
+{%block content%}
+
+<section class="h-100 h-custom" style="background-color: #eee;">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+                <div class="card" dir="rtl">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <button class="mb-3 text-primary btn" onclick="history.back()">
+                                    <i class="bi bi-arrow-right"></i>
+                                    مواصلة التسوق
+                                </button>
+                                <hr>
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <div>
+                                        <p class="mb-0">لديك  {{request.session.cart}} منتج في السلة </p>
+                                    </div>
+                                </div>
+                                {% for data in items %}
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between">
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <div>
+                                                        <img
+                                                            src="{{data.item.imageURL}}"
+                                                            class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
+                                                    </div>
+                                                    <div class="me-3">
+                                                        <h5 class="mb-0">{{data.item.item_name}}</h5>
+                                                        <small class="text-secondary fs-6">{{data.color}}</small>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex col-3 align-items-center">
+                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn"
+                                                        onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
+                                                        <i class="bi bi-dash-circle-fill"></i>
+                                                    </button>
+                                    
+                                                    <input id="form1" min="0" name="quantity" value="2" type="number"
+                                                        class="form-control form-control-sm" />
+                                    
+                                                    <button data-mdb-button-init data-mdb-ripple-init class="btn rounded-3"
+                                                        onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
+                                                        <i class="bi bi-plus-circle-fill"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="d-flex flex-row align-items-center">
+                                                    <div style="width: 80px;">
+                                                        <h5 class="mb-0">{{data.item.price}}</h5>
+                                                    </div>
+                                                    <a href="#!" class="text-danger"><i class="bi bi-trash3"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor%}
+
+                            </div>
+
+                            <div class="col-lg-5">
+            
+                            <div class="card rounded-3">
+                                <div class="card-body">
+                                    <h3 class="mb-5 pt-2 text-center fw-bold text-uppercase">الدفع</h3>
+                                <form class="mt-4">
+                                    <div data-mdb-input-init class="form-outline form-white mb-4">
+                                    <input type="text" id="typeName" class="form-control form-control-lg" siez="17"
+                                        placeholder="أحمد علي" />
+                                    <label class="form-label" for="typeName">الاسم على البطاقة</label>
+                                    </div>
+            
+                                    <div data-mdb-input-init class="form-outline form-white mb-4">
+                                    <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+                                        placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
+                                    <label class="form-label" for="typeText">رقم البطاقة</label>
+                                    </div>
+            
+                                    <div class="row mb-4">
+                                    <div class="col-md-6">
+                                        <div data-mdb-input-init class="form-outline form-white">
+                                        <input type="text" id="typeExp" class="form-control form-control-lg"
+                                            placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
+                                        <label class="form-label" for="typeExp">تاريخ انتهاء البطاقة</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div data-mdb-input-init class="form-outline form-white">
+                                        <input type="password" id="typeText" class="form-control form-control-lg"
+                                            placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
+                                        <label class="form-label" for="typeText">Cvv</label>
+                                        </div>
+                                    </div>
+                                    </div>
+            
+                                </form>
+            
+                                <hr class="my-4">
+            
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-2">المجموع الفرعي:</p>
+                                    <p class="mb-2">4798.00 SR</p>
+                                </div>
+            
+                                <div class="d-flex justify-content-between">
+                                    <p class="mb-2">رسوم الشحن:</p>
+                                    <p class="mb-2">20.00 SR</p>
+                                </div>
+            
+                                <div class="d-flex justify-content-between mb-4">
+                                    <p class="mb-2">الإجمالي(شامل الضريبة):</p>
+                                    <p class="mb-2">4818.00 SR</p>
+                                </div>
+            
+                                <div class="text-center">
+                                    <button  type="button"  class="btn btn-success btn-block btn-lg mx-auto">
+                                        <span>اشتر الآن </span>
+                                        <span>4818.00 SR</span>
+                                    </button>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content%}

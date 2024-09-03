@@ -9,7 +9,7 @@
                             <div class="col-lg-6 bg-body-tertiary">
                                 <div class="p-3">
                                     <img
-                                    src="{{data.item.image.url}}"
+                                    src="{{data.item.imageURL}}"
                                     class="img-fluid rounded-3"
                                     alt="{{data.item.item_name}}"
                                 />
@@ -55,12 +55,12 @@
                                         >
                                             اضف الى السلة <i class="bi bi-bag-fill"></i>
                                         </button>
-                                        <button
-                                            type="button"
+                                        <a
+                                            href="{% url 'check' %}"
                                             class="btn btn-success btn-block btn-lg"
                                         >
                                             الدفع <i class="bi bi-credit-card-2-back"></i>
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -71,5 +71,4 @@
         </div>
     </div>
 </section>
-
 {% endblock content%}

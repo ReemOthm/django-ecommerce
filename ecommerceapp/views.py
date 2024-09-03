@@ -30,3 +30,9 @@ def add_to_cart(request):
         count = count + 1
     request.session["cart"]= count
     return JsonResponse({'count': count})
+
+def checkout(request):
+    template = loader.get_template('checkout.html')
+    cart_items = Cart.objects.values_list('itemsid', flat=True)
+    items = ItemsDetails.objects.select_related("item").filter(id__in=cart_items)
+    return HttpResponse(template.render({'request': request, 'items': items }))
