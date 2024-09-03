@@ -1,0 +1,42 @@
+{% extends 'base.html' %} 
+{% block content %} 
+<section style="background-color: #d2c9ff">
+    <div class="container">
+        <div class="row ">
+            <div class="col-sm-6 mx-auto mb-5">
+                <div class="card mt-5">
+                    <div class="card-body p-4" dir="rtl">
+                        <h3 class="text-center">تسجيل حساب جديد</h3>
+                        <div>
+                            <form method="post" class="form-group">
+                                {% csrf_token %}
+                                <div class="py-2">
+                                    <label for="id_username" class="form-label fs-5">اسم المستخدم:</label>
+                                    <input type="text" name="username" id="id_username" class="form-control">
+                                </div>
+                                <div>
+                                    <label for="id_email" class="form-label fs-5">البريد الإلكتروني:</label> 
+                                    <input type="email" name="email" class="form-control" id="id_email">
+                                </div>
+                                <div class="py-2">
+                                    <label for="id_password1" class="form-label fs-5">كلمة المرور:</label> 
+                                    <input type="password" name="password1" class="form-control" id="id_password1">
+                                </div>
+                                <div>
+                                    <label for="id_password2" class="form-label fs-5">تأكيد كلمة المرور:</label>
+                                    <input type="password" name="password2" class="form-control" id="id_password2">
+                                </div>
+                                <button class="btn btn-primary mt-3 w-100" type="submit">تسجيل </button>
+                                <div class="pt-3 fs-6 text-center">
+                                    <strong>لديك حساب؟<a href="{% url 'auth_login' %}" class="pe-2">تسجيل الدخول </a></strong> 
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

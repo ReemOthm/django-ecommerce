@@ -32,13 +32,14 @@
                 <ul class="navbar-nav d-flex align-items-center">
                     <li class="nav-item">
                     <div class="d-flex flex-row">
-                    <i class="bi bi-person-circle"></i>
-                    <i class="bi bi-person-circle text-white"></i>
+                        <i class="bi bi-person-circle"></i>
+                        <i class="bi bi-person-circle text-white"></i>
                     </div>
                     </li>
                     <li class="nav-item">  
-                        <a href="#" class="nav-link d-flex align-items-center" data-abc="true"><span></span><i class='bx bxs-chevron-down'></i></a>
+                        <a href="#" class="nav-link d-flex align-items-center" data-abc="true"><span>{{request.user}}</span><i class='bx bxs-chevron-down'></i></a>
                     </li>
+                    <li><a href="{% url 'logout' %}">logout</a></li>
                 </ul> 
             </div> 
         </nav> 
