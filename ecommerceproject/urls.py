@@ -29,5 +29,6 @@ urlpatterns = [
     path('checkout/', ec.checkout, name='check'),
     path('auth_register/',ec.auth_register,  name='auth_register'),
     path('auth_login/',ec.auth_login, name='auth_login'),
-    path('logout/',ec.logout_view , name='logout')
+    path('logout/',ec.logout_view , name='logout'),
+    path('delete_item_from_cart/',ec.delete_item_from_cart),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

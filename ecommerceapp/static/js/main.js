@@ -26,3 +26,19 @@ function addToCart(id){
         }
     });
 }
+
+function deleteItemFromCart(id){
+    const cartIcon = document.getElementById("cart-icon")
+    const ajaxUrl = '/delete_item_from_cart/'
+
+    $.ajax({
+        headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") },
+        url: ajaxUrl,
+        data:{id:id},
+        method:"post",
+        success: function(response){
+            cartIcon.textContent = response.count
+            location.reload()
+        }
+    });
+}

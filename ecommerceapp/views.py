@@ -3,7 +3,6 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.template import loader
 from .models import Items, StoreType, ItemsDetails, Cart
 from django.views.decorators.csrf import csrf_exempt
-from django.db.models import Q
 
 from django.contrib.auth import login ,authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -24,24 +23,35 @@ def details(request,id):
     data = ItemsDetails.objects.select_related('item').filter(item_id=id).first()
     return HttpResponse(template.render({'request':request, 'data':data}))
 
-@csrf_exempt
-def add_to_cart(request):
-    id = request.POST.get('id')
-    p= Cart(itemsid= id)
-    p.save()
+def calculate_count(request):
     row = Cart.objects.all()
     count =0
     for item in row:
         count = count + 1
     request.session["cart"]= count
+    return count
+
+@csrf_exempt
+def add_to_cart(request):
+    id = request.POST.get('id')
+    p= Cart(itemsid= id)
+    p.save()
+    count = calculate_count(request)
     return JsonResponse({'count': count})
 
 @login_required(login_url='/auth_login/')
 def checkout(request):
     template = loader.get_template('checkout.html')
     cart_items = Cart.objects.values_list('itemsid', flat=True)
-    items = ItemsDetails.objects.select_related("item").filter(Q(id__in=cart_items) | Q(item_id__in= cart_items))
+    items = ItemsDetails.objects.select_related("item").filter(item_id__in=cart_items)
     return HttpResponse(template.render({'request': request, 'items': items }))
+
+@csrf_exempt
+def delete_item_from_cart(request):
+    item = Cart.objects.filter(itemsid=request.POST.get('id'))
+    item.delete()
+    count = calculate_count(request)
+    return JsonResponse({"count": count})
 
 @csrf_exempt
 def auth_login(request):
