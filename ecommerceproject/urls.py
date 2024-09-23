@@ -31,4 +31,6 @@ urlpatterns = [
     path('auth_login/',ec.auth_login, name='auth_login'),
     path('logout/',ec.logout_view , name='logout'),
     path('delete_item_from_cart/',ec.delete_item_from_cart),
+    path('remove_all_items/',ec.remove_all_items),
+    path('change_qty/',ec.change_qty),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

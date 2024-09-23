@@ -9,23 +9,23 @@
                             <div class="col-lg-6">
                                 <div class="p-3">
                                     <img
-                                    src="{{data.item.imageURL}}"
+                                    src="{{data.imageURL}}"
                                     class="img-fluid rounded-3"
-                                    alt="{{data.item.item_name}}"
+                                    alt="{{data.item_name}}"
                                 />
                                 </div>
                             </div>
                             <div class="col-lg-6" dir="rtl">
                                 <div class="py-4 px-5 ">
-                                    <h3 class="fw-bold mt-2 pt-1 ">{{data.item.item_name}}</h3>
-                                    <small>{{data.item.description}}</small>
+                                    <h3 class="fw-bold mt-2 pt-1 ">{{data.item_name}}</h3>
+                                    <small>{{data.description}}</small>
                                     <div class="d-flex gap-2 ">
                                         <small>اللون:</small>
                                         <small>{{data.color}}</small>
                                     </div>
                                     <div class="d-flex gap-2">
                                         <span>السعر:</span>
-                                        <span>{{data.item.price}}</span>
+                                        <span>{{data.price}}</span>
                                         <small><sub>ريال سعودي</sub></small>
                                     </div>
                                     <div class="d-flex align-items-center my-3">
@@ -38,18 +38,18 @@
                                             value="1"
                                             type="number"
                                             class="form-control form-control-sm w-25 me-3"
-                                            onchange="totalPrice({{data.item.price}})"
+                                            onchange="totalPrice({{data.price}})"
                                             />
                                         </div>
                                         <div class="d-flex  gap-1 align-items-center">
-                                            <small class="text-uppercase">الإجمالي: </س>
-                                                <span id="total-price"  class="fw-bold"> {{data.item.price}}</span>
+                                            <small class="text-uppercase">الإجمالي: </small>
+                                                <span id="total-price"  class="fw-bold">{{data.price}}</span>
                                                 <small><sub>ريال سعودي</sub></small>
                                         </div>
                                     </div>
                                     <div class="d-flex gap-2 justify-content-center mt-4 ">
                                         <button
-                                            onclick="addToCart({{data.item.id}})"
+                                            onclick="addToCart(false,{{data.id}},'{{data.item_name}}','{{data.imageURL}}','{{data.color}}')"
                                             type="button"
                                             class="btn btn-primary btn-block btn-lg"
                                         >

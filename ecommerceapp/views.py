@@ -1,8 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse, redirect
 from django.template import loader
-from .models import Items, StoreType, ItemsDetails, Cart
+from .models import Items, Cart
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 from django.contrib.auth import login ,authenticate, logout
 from django.contrib.auth.decorators import login_required
@@ -14,37 +15,57 @@ def index(request):
     return HttpResponse(template.render({'request':request}))
 
 def products(request, id):
-    p = Items.objects.filter(storetype=id)
+    p = Items.objects.filter(Q(storetype=id) & Q(availability=True))
     template = loader.get_template('products.html')
     return HttpResponse(template.render({'request':request, 'items':p}))
 
 def details(request,id):
     template = loader.get_template('details.html')
-    data = ItemsDetails.objects.select_related('item').filter(item_id=id).first()
+    data = Items.objects.filter(id=id).first()
     return HttpResponse(template.render({'request':request, 'data':data}))
 
 def calculate_count(request):
     row = Cart.objects.all()
     count =0
     for item in row:
-        count = count + 1
+        count = count + int(item.qty)
     request.session["cart"]= count
     return count
 
 @csrf_exempt
 def add_to_cart(request):
     id = request.POST.get('id')
-    p= Cart(itemsid= id)
-    p.save()
+    name = request.POST.get('name')
+    image = request.POST.get('image')
+    color = request.POST.get('color')
+    qty = request.POST.get('qty')
+    price = request.POST.get('price')
+
+    product = Cart.objects.filter(itemsid=id).first()
+    if product:
+        product.qty += int(qty)
+        product.price += float(price) 
+        product.save()
+    else: 
+        p= Cart(itemsid=id,name=name,image=image,color=color,qty=qty,price=price)
+        p.save()
     count = calculate_count(request)
     return JsonResponse({'count': count})
 
-@login_required(login_url='/auth_login/')
-def checkout(request):
-    template = loader.get_template('checkout.html')
-    cart_items = Cart.objects.values_list('itemsid', flat=True)
-    items = ItemsDetails.objects.select_related("item").filter(item_id__in=cart_items)
-    return HttpResponse(template.render({'request': request, 'items': items }))
+@csrf_exempt
+def change_qty(request):
+    item = Cart.objects.filter(itemsid=request.POST.get('id')).first()
+    action = request.POST.get('action')
+    price = Items.objects.filter(id=request.POST.get('id')).first().price
+    if action == 'add':
+        item.qty += 1
+        item.price += price
+    elif action == 'remove':
+        item.qty -= 1
+        item.price -= price
+    item.save()
+    count = calculate_count(request)
+    return JsonResponse({"count": count,"price": item.price})
 
 @csrf_exempt
 def delete_item_from_cart(request):
@@ -52,6 +73,18 @@ def delete_item_from_cart(request):
     item.delete()
     count = calculate_count(request)
     return JsonResponse({"count": count})
+
+@csrf_exempt
+def remove_all_items(request):
+    Cart.objects.all().delete()
+    request.session["cart"]= 0
+    return JsonResponse({"count": 0})
+
+@login_required(login_url='/auth_login/')
+def checkout(request):
+    template = loader.get_template('checkout.html')
+    cart_items = Cart.objects.all()
+    return HttpResponse(template.render({'request': request, 'items': cart_items }))
 
 @csrf_exempt
 def auth_login(request):

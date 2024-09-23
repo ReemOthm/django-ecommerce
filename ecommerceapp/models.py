@@ -12,6 +12,10 @@ class Items(models.Model):
     image= models.ImageField(upload_to='images/', null=True)
     price= models.FloatField()
     availability = models.BooleanField()
+    color = models.CharField(max_length=50)
+    qty = models.IntegerField()
+    tax = models.FloatField()
+    barcode = models.CharField(max_length=50)
     storetype = models.ForeignKey(StoreType, on_delete= models.CASCADE, null=True)
     def __str__(self):
         template='{0.item_name} {0.description} {0.image} {0.price} {0.availability}'
@@ -25,16 +29,12 @@ class Items(models.Model):
             url = ''
         return url
 
-class ItemsDetails(models.Model):
-    color = models.CharField(max_length=50)
-    qty = models.FloatField()
-    tax = models.FloatField()
-    barcode = models.CharField(max_length=50)
-    item = models.ForeignKey(Items, on_delete= models.CASCADE, null=True)
-    def __str__(self):
-        template='{0.color} {0.qty} {0.tax} {0.barcode}'
-        return template.format(self)
-
 class Cart(models.Model):
     itemsid = models.IntegerField()
+    name = models.CharField(max_length=50,null=True)
+    image= models.ImageField(upload_to='images/', null=True)
+    color = models.CharField(max_length=50,null=True)
+    qty = models.FloatField(null=True)
+    price= models.FloatField()
+
 
