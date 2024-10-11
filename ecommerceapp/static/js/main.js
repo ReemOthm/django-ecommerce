@@ -38,6 +38,7 @@ function addToCart(page,id, name, image, color, itemPrice){
 function changeQty(action,id){
     const ajaxUrl = '/change_qty/'
     const cartitemPrice = document.getElementById("cartitem-price"+id)
+    const total = document.getElementsByClassName("total")
     $.ajax({
         headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") },
         url: ajaxUrl,
@@ -46,6 +47,9 @@ function changeQty(action,id){
         success: function(response){
             cartIcon.textContent = response.count;
             cartitemPrice.textContent = response.price;
+            for(let i=0; i< total.length; i++){
+                total[i].textContent = "SR "+ response.total
+            }
             Swal.fire({
                 position: "top-end",
                 icon: "success",
@@ -83,6 +87,26 @@ function removeAllItems(){
         success: function(response){
             cartIcon.textContent = response.count
             location.reload()
+        }
+    });
+}
+
+function pay(){
+    const ajaxUrl = '/pay/'
+    $.ajax({
+        headers: { "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content") },
+        url: ajaxUrl,
+        data:{},
+        method:"post",
+        success: function(response){
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                width: "350px",
+                showConfirmButton: false,
+                timer: 1500
+            })
+            location.href= "../my_orders"
         }
     });
 }

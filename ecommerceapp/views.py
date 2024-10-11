@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, HttpResponse, redirect
 from django.template import loader
-from .models import Items, Cart
+from .models import Items, Cart, Order
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 
@@ -31,6 +31,13 @@ def calculate_count(request):
         count = count + int(item.qty)
     request.session["cart"]= count
     return count
+
+def total_price():
+    cart_items = Cart.objects.all()
+    total = 0
+    for item in cart_items:
+        total += item.price
+    return total
 
 @csrf_exempt
 def add_to_cart(request):
@@ -65,7 +72,8 @@ def change_qty(request):
         item.price -= price
     item.save()
     count = calculate_count(request)
-    return JsonResponse({"count": count,"price": item.price})
+    total = total_price()
+    return JsonResponse({"count": count,"price": item.price, "total": total })
 
 @csrf_exempt
 def delete_item_from_cart(request):
@@ -80,11 +88,39 @@ def remove_all_items(request):
     request.session["cart"]= 0
     return JsonResponse({"count": 0})
 
+@csrf_exempt
+def pay(request):
+    products= Cart.objects.values_list("itemsid", flat=True)
+    quantities= Cart.objects.values_list("qty", flat=True)
+    ids = ",".join(str(x) for x in products)
+    qIds = ",".join(str(x) for x in quantities)
+    totalprice = total_price()
+    order = Order(qty=qIds, total=totalprice,status="pending",products=ids)
+    order.save()
+    for idx,i in enumerate(products):
+        p = Items.objects.get(id=i)
+        p.qty = p.qty - quantities[idx]
+        p.save()
+        if(p.qty == 0):
+            p.availability = False
+            p.save()
+        order.items.add(p)
+    Cart.objects.all().delete()
+    request.session["cart"]= 0
+    return JsonResponse({"sucess":True})
+
 @login_required(login_url='/auth_login/')
 def checkout(request):
     template = loader.get_template('checkout.html')
     cart_items = Cart.objects.all()
-    return HttpResponse(template.render({'request': request, 'items': cart_items }))
+    total =  total_price()
+    return HttpResponse(template.render({'request': request, 'items': cart_items, 'total': total }))
+
+@login_required(login_url='/auth_login/')
+def my_orders(request):
+    orders = Order.objects.prefetch_related('items').all()
+    template = loader.get_template('orders.html')
+    return HttpResponse(template.render({'request': request, "orders": orders, }))
 
 @csrf_exempt
 def auth_login(request):

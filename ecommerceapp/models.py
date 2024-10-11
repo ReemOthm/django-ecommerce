@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import validate_comma_separated_integer_list
 
 # Create your models here.
 class StoreType(models.Model):
@@ -34,7 +35,15 @@ class Cart(models.Model):
     name = models.CharField(max_length=50,null=True)
     image= models.ImageField(upload_to='images/', null=True)
     color = models.CharField(max_length=50,null=True)
-    qty = models.FloatField(null=True)
+    qty = models.IntegerField()
     price= models.FloatField()
+
+class Order(models.Model):
+    items = models.ManyToManyField(Items)
+    qty = models.CharField(validators=[validate_comma_separated_integer_list],max_length=200)
+    total= models.FloatField()
+    status = models.CharField(max_length=50)
+    products = models.CharField(validators=[validate_comma_separated_integer_list],max_length=200)
+    createdAt = models.DateTimeField(auto_now_add=True)
 
 

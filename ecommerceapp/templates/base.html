@@ -28,18 +28,6 @@
     <header class="section-header">
         <nav class="navbar navbar-dark navbar-expand p-0 bg-dark">
             <div class="container-fluid">
-                <ul class="navbar-nav d-flex align-items-center">
-                    <li class="nav-item">
-                    <div class="d-flex flex-row">
-                        <i class="bi bi-person-circle"></i>
-                        <i class="bi bi-person-circle text-white"></i>
-                    </div>
-                    </li>
-                    <li class="nav-item">  
-                        <a href="#" class="nav-link d-flex align-items-center" data-abc="true"><span>{{request.user}}</span><i class='bx bxs-chevron-down'></i></a>
-                    </li>
-                    <li><a href="{% url 'logout' %}">logout</a></li>
-                </ul>
                 <ul class="navbar-nav d-none d-md-flex mr-auto fs-6">
                     <li class="nav-item"><a class="nav-link" href="#" data-abc="true">دفع عند الستلام</a></li>
                     <li class="nav-item"><a class="nav-link" href="#" data-abc="true">توصيل مجاني</a></li>
@@ -56,28 +44,57 @@
                             <img  class="d-none d-md-flex" src="{% static 'images/shopping-cart.png' %}" width="70" height="60">
                         </a>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-7 col-md-6">
                         <div class="d-flex form-inputs">
                             <input class="form-control text-end" type="text" placeholder="البحث عن منتج">
                             <i class="bx bx-search"></i>
                         </div>
                     </div>
                     
-                    <div class="col-md-3">
-                        <div class="d-flex d-none d-md-flex flex-row align-items-center justify-content-center">
-                            <span class="shop-bag"><i class='bx bxs-shopping-bag'></i></span>
+                    <div class="col-2 col-md-1">
+                        <div class="d-flex d-md-flex flex-row align-items-center ">
                             <div class="d-flex flex-column ms-2">
                                 <a href="{% url 'check' %}" class="btn position-relative ">
                                     <span class="fs-4">
                                         <i class="bi bi-cart"></i>
                                     </span>
                                     <span id="cart-icon" class="position-absolute m-2 ms-0 top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                        {{request.session.cart}}
-                                        <span class="visually-hidden">unread messages</span>
+                                        {% if request.session.cart %}
+                                            {{request.session.cart}}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                            <span class="visually-hidden">unread messages</span>
                                     </span>
                                 </a>
                             </div>    
                         </div>           
+                    </div>
+                    <div class="col-3 col-md-2">
+                        <ul class="navbar-nav d-flex align-items-center" dir="rtl">
+                            {% if request.user.is_authenticated %}
+                                <li class="nav-item">
+                                    <div class="d-flex flex-row  ps-2 gap-2">
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <span class="nav-link dropdown-toggle text-black" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="bi bi-person-circle "></i>
+                                        {{request.user}}
+                                    </span>
+                                    <ul class="dropdown-menu text-end" aria-labelledby="navbarDropdownMenuLink">
+                                        <li><a class="dropdown-item" href="{% url 'my_orders' %}">طلباتي</a></li> 
+                                        <li><a class="dropdown-item" href="{% url 'logout' %}">تسجيل الخروج</a></li> 
+                                    </ul>
+                                </li>
+                            {% else %}
+                            <li class="nav-item">  
+                                <a href="{% url 'auth_login' %}" class="btn btn-outline-primary">
+                                    تسجيل الدخول
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
                     </div>
                 </div>
             </div> 
@@ -91,10 +108,10 @@
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{% url 'products' id=1 %}"> الحواسيب</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'products' id=1 %}"> لابتوب</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'products' id=2 %}"> السماعات</a>
+                        <a class="nav-link" href="{% url 'products' id=2 %}"> سماعات</a>
                     </li>
                 </ul>
                 </div>
@@ -103,7 +120,7 @@
     </header>
     
     
-    <main>
+    <main style="min-height: 60vh;">
         {% block content%}
         {% endblock content%}
     </main>

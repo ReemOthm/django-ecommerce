@@ -33,4 +33,6 @@ urlpatterns = [
     path('delete_item_from_cart/',ec.delete_item_from_cart),
     path('remove_all_items/',ec.remove_all_items),
     path('change_qty/',ec.change_qty),
+    path('pay/',ec.pay, name="pay"),
+    path('my_orders/',ec.my_orders, name="my_orders"),
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
